@@ -8,6 +8,8 @@ const jobRouter = require("./controllers/job")
 const educationRouter = require("./controllers/education")
 const homeInfo = require("./controllers/home.json")
 const {PORT} = process.env
+const Education = require("./models/education")
+const Job = require("./models/job")
 
 // Application object
 const app = express()
@@ -26,6 +28,22 @@ app.use("/education",educationRouter)
 app.get("/", (request, response) => {
     response.send("Portfolio server is functional")
 })
+
+app.get("/about", async (request, response) => {
+
+    try {
+        const jobs = await Job.find({})
+        try {
+            const education = await Education.find({})
+            response.status(200).json({jobs, education})
+        }catch(error){
+            response.status(400).json(error)
+        }
+    }catch(error){
+        response.status(400).json(error)
+    }
+})
+
 
 app.get("/home", (request, response) => {
     response.json(homeInfo)
