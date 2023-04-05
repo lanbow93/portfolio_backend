@@ -4,7 +4,7 @@ const Project = require("../models/project")
 // Index
 router.get("/", async (request, response) => {
     try {
-        response.status(200).json(await Project.find({}))
+        response.status(200).json(await Project.find({}).sort({"updatedAt": -1}))
     } catch(error){
         response.status(400).json(error)
     }
